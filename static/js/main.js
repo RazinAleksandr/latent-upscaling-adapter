@@ -35,6 +35,41 @@
     onScroll();
   }
 
+  /* ---- Lightbox: click any figure image to open it ---- */
+  var lb = document.createElement("div");
+  lb.className = "lightbox";
+  lb.setAttribute("role", "dialog");
+  lb.setAttribute("aria-modal", "true");
+  lb.setAttribute("aria-label", "Image viewer");
+  lb.innerHTML = '<img alt="" />';
+  document.body.appendChild(lb);
+  var lbImg = lb.querySelector("img");
+
+  var lbOpen = function (src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || "";
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+  };
+  var lbClose = function () {
+    lb.classList.remove("open");
+    document.body.style.overflow = "";
+  };
+  lb.addEventListener("click", lbClose);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && lb.classList.contains("open")) lbClose();
+  });
+
+  document.querySelectorAll("figure img").forEach(function (img) {
+    img.addEventListener("click", function (e) {
+      if (e.metaKey || e.ctrlKey || e.button !== 0) return;
+      var link = img.closest("a");
+      var full = link && link.getAttribute("href");
+      if (link) e.preventDefault();
+      lbOpen(full || img.src, img.alt);
+    });
+  });
+
   /* ---- Copy BibTeX ---- */
   var btn = document.getElementById("copy-bibtex");
   var pre = document.getElementById("bibtex-text");

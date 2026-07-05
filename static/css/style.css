@@ -343,6 +343,27 @@ figcaption {
   margin: 16px auto 0;
 }
 figcaption b { color: var(--ink); font-weight: 600; }
+figure img { cursor: zoom-in; }
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  padding: 24px;
+  background: rgba(12, 9, 8, .93);
+  opacity: 0; pointer-events: none;
+  transition: opacity .18s ease;
+  cursor: zoom-out;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+  max-width: min(1600px, 94vw);
+  max-height: 92vh;
+  width: auto; height: auto;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .6);
+  background: #fff;
+}
 figcaption .m { font-family: var(--mono); font-size: .92em; }
 
 /* ---------------- Highlight cards ---------------- */
@@ -598,5 +619,5 @@ footer {
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn, .gallery img, .chip, .topnav, .theme-toggle { transition: none; }
+  .btn, .gallery img, .chip, .topnav, .theme-toggle, .lightbox { transition: none; }
 }
