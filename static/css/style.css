@@ -532,6 +532,18 @@ footer {
 }
 .foot-col a:hover { color: var(--accent); text-decoration: none; }
 .foot-col .soon-inline { color: var(--muted); }
+.foot-person {
+  display: flex; align-items: center; gap: 10px;
+  padding: 3.5px 0;
+}
+.foot-person .name { font-size: 14.5px; color: var(--ink); }
+.foot-person .socials { display: inline-flex; gap: 4px; }
+.foot-person .socials a {
+  display: inline-flex; padding: 3px;
+  color: var(--muted);
+}
+.foot-person .socials a:hover { color: var(--accent); }
+.foot-person .socials svg { width: 14px; height: 14px; }
 .foot-copy {
   text-align: center;
   margin: 0;
@@ -540,6 +552,7 @@ footer {
 }
 @media (max-width: 560px) {
   .foot-grid { grid-template-columns: 1fr; gap: 22px; text-align: center; }
+  .foot-person { justify-content: center; }
 }
 
 /* ---------------- Responsive ---------------- */
