@@ -197,34 +197,62 @@
 
     <div class="stats">
       <div class="stat"><div class="num">~3&times;</div><div class="lbl">lower decode + upscale time</div></div>
-      <div class="stat"><div class="num">3.52 s</div><div class="lbl">SDXL + LUA @ 2048&sup2;</div></div>
-      <div class="stat"><div class="num">6.87 s</div><div class="lbl">SDXL + LUA @ 4096&sup2;</div></div>
+      <div class="stat"><div class="num">3.52 / 6.87 s</div><div class="lbl">SDXL + LUA<br>@ 2048&sup2; / 4096&sup2;</div></div>
+      <div class="stat"><div class="num">29.8 / 31.9 s</div><div class="lbl">FLUX + LUA<br>@ 2048&sup2; / 4096&sup2;</div></div>
       <div class="stat"><div class="num">81.9%</div><div class="lbl">preferred over SDXL direct<br>(blind 2AFC, 20 annotators, 1,000 votes)</div></div>
     </div>
+
+    <figure style="margin-bottom:46px">
+      <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />
+      <figcaption>
+        <span class="fig">Fig. 5</span> — Qualitative comparison at 2048&sup2;/4096&sup2; from identical
+        1024&sup2; SDXL bases (red boxes: 12&times; crops). <b>SDXL + LUA</b> yields clean textures at the
+        lowest latency, while direct high-resolution sampling degrades into artifacts.
+      </figcaption>
+    </figure>
 
     <div class="table-wrap">
       <table class="results">
         <thead>
-          <tr><th>Method (SDXL base)</th><th>Resolution</th><th>Time&nbsp;&darr;</th><th>FID&nbsp;&darr;</th></tr>
+          <tr><th>Resolution</th><th>Method</th><th>FID&nbsp;&darr;</th><th>pFID&nbsp;&darr;</th><th>KID&nbsp;&darr;</th><th>pKID&nbsp;&darr;</th><th>CLIP&nbsp;&uarr;</th><th>Time&nbsp;(s)&nbsp;&darr;</th></tr>
         </thead>
         <tbody>
-          <tr class="lua"><td>SDXL + LUA</td><td>2048&sup2;</td><td class="best">3.52 s</td><td class="best">180.80</td></tr>
-          <tr><td>SDXL + SwinIR (pixel SR)</td><td>2048&sup2;</td><td>6.29 s</td><td>184.80</td></tr>
-          <tr><td>SDXL direct</td><td>2048&sup2;</td><td>7.23 s</td><td>207.40</td></tr>
-          <tr><td>LSRNA-DemoFusion</td><td>2048&sup2;</td><td>20.77 s</td><td>181.24</td></tr>
-          <tr class="sep lua"><td>SDXL + LUA</td><td>4096&sup2;</td><td class="best">6.87 s</td><td class="best">176.90</td></tr>
-          <tr><td>SDXL direct</td><td>4096&sup2;</td><td>&mdash;</td><td>280.42</td></tr>
-          <tr><td>LSRNA-DemoFusion</td><td>4096&sup2;</td><td>91.64 s</td><td>&mdash;</td></tr>
+          <tr><td rowspan="6">1024&times;1024</td>
+              <td>HiDiffusion</td><td>232.55</td><td>230.39</td><td>0.0211</td><td>0.0288</td><td>0.695</td><td>1.54</td></tr>
+          <tr><td>DemoFusion</td><td>195.82</td><td>193.99</td><td>0.0153</td><td>0.0229</td><td>0.725</td><td>2.04</td></tr>
+          <tr><td>LSRNA&ndash;DemoFusion</td><td>194.55</td><td>192.73</td><td class="best">0.0151</td><td>0.0228</td><td>0.734</td><td>3.09</td></tr>
+          <tr><td>SDXL (Direct)</td><td class="best">194.53</td><td>192.71</td><td class="best">0.0151</td><td class="best">0.0225</td><td>0.731</td><td>1.61</td></tr>
+          <tr><td>SDXL + SwinIR</td><td>210.40</td><td>204.23</td><td>0.0313</td><td>0.0411</td><td>0.694</td><td>2.47</td></tr>
+          <tr class="lua"><td>SDXL + LUA (ours)</td><td>209.80</td><td class="best">191.75</td><td>0.0330</td><td>0.0426</td><td class="best">0.738</td><td class="best">1.42</td></tr>
+        </tbody>
+        <tbody>
+          <tr><td rowspan="6">2048&times;2048</td>
+              <td>HiDiffusion</td><td>200.72</td><td>114.30</td><td>0.0030</td><td>0.0090</td><td>0.738</td><td>4.97</td></tr>
+          <tr><td>DemoFusion</td><td>184.79</td><td>177.67</td><td>0.0030</td><td>0.0100</td><td>0.750</td><td>28.99</td></tr>
+          <tr><td>LSRNA&ndash;DemoFusion</td><td>181.24</td><td>98.09</td><td>0.0019</td><td>0.0066</td><td>0.762</td><td>20.77</td></tr>
+          <tr><td>SDXL (Direct)</td><td>202.87</td><td>116.57</td><td>0.0030</td><td>0.0086</td><td>0.741</td><td>7.23</td></tr>
+          <tr><td>SDXL + SwinIR</td><td>183.16</td><td>100.09</td><td>0.0020</td><td>0.0077</td><td>0.757</td><td>6.29</td></tr>
+          <tr class="lua"><td>SDXL + LUA (ours)</td><td class="best">180.80</td><td class="best">97.90</td><td class="best">0.0018</td><td class="best">0.0065</td><td class="best">0.764</td><td class="best">3.52</td></tr>
+        </tbody>
+        <tbody>
+          <tr><td rowspan="6">4096&times;4096</td>
+              <td>HiDiffusion</td><td>233.65</td><td>95.95</td><td>0.0158</td><td>0.0214</td><td>0.698</td><td>122.62</td></tr>
+          <tr><td>DemoFusion</td><td>185.36</td><td>177.89</td><td>0.0043</td><td>0.0113</td><td>0.749</td><td>225.77</td></tr>
+          <tr><td>LSRNA&ndash;DemoFusion</td><td>177.95</td><td>62.07</td><td>0.0023</td><td class="best">0.0071</td><td>0.757</td><td>91.64</td></tr>
+          <tr><td>SDXL (Direct)</td><td>280.42</td><td>101.89</td><td>0.0396</td><td>0.0175</td><td>0.663</td><td>148.71</td></tr>
+          <tr><td>SDXL + SwinIR</td><td>183.15</td><td>65.71</td><td>0.0018</td><td>0.0103</td><td>0.756</td><td>7.29</td></tr>
+          <tr class="lua"><td>SDXL + LUA (ours)</td><td class="best">176.90</td><td class="best">61.80</td><td class="best">0.0015</td><td>0.0152</td><td class="best">0.759</td><td class="best">6.87</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="table-note">OpenImages test set; lower is better. Full tables with pFID, KID, CLIP and
-    FLUX/SD3 results are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
+    <p class="table-note">Quantitative comparison on OpenImages; SDXL base 512&sup2; (1K), 1024&sup2; (2K/4K).
+    Median per-image runtime on H100, batch 1. Best per column in bold; lower is better except CLIP.
+    Cross-model (FLUX/SD3) and ablation tables are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
 
     <figure class="narrow" style="margin-top:46px">
       <img src="static/images/pareto.png" alt="Pareto frontier of speed versus quality at 2048²–4096²; LUA sits on the favorable speed–quality frontier." />
       <figcaption>
-        <span class="fig">Fig. 5</span> — <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;.
+        <span class="fig">Fig. 6</span> — <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;.
         LUA reaches near-native fidelity at a fraction of the runtime of multi-stage methods.
       </figcaption>
     </figure>
@@ -311,7 +339,7 @@
     <figure>
       <img src="static/images/domain_examples.png" alt="Cross-domain generalization of LUA: upscaling to 2048² with 4× zoom crops across diverse non-photographic domains." />
       <figcaption>
-        <span class="fig">Fig. 6</span> — Cross-domain generalization: upscaling to 2048&sup2; with
+        <span class="fig">Fig. 7</span> — Cross-domain generalization: upscaling to 2048&sup2; with
         4&times; zoom crops across diverse, non-photographic content.
       </figcaption>
     </figure>
