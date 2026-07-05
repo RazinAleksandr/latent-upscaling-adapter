@@ -199,27 +199,24 @@
       <div class="stat">
         <div class="hdr">SDXL &middot; 2048&sup2;</div>
         <div class="num"><span class="was">7.23 s</span> <span class="arr">&rarr;</span> <b>3.52 s</b></div>
-        <div class="lbl">direct &rarr; with LUA<br>H100 (paper, Tab.&nbsp;1)</div>
+        <div class="lbl">direct &rarr; with LUA<br>GPU: H100</div>
       </div>
       <div class="stat">
         <div class="hdr">FLUX &middot; 2048&sup2;</div>
         <div class="num"><span class="was">103.6 s</span> <span class="arr">&rarr;</span> <b>37.0 s</b></div>
-        <div class="lbl">direct &rarr; with LUA<br>RTX 6000 Ada (release benchmark)</div>
+        <div class="lbl">direct &rarr; with LUA<br>GPU: RTX 6000 Ada</div>
       </div>
       <div class="stat">
-        <div class="hdr">With LUA &middot; 4096&sup2;</div>
+        <div class="hdr">SDXL / FLUX &middot; 4096&sup2;</div>
         <div class="num"><b>6.87 / 31.9 s</b></div>
-        <div class="lbl">SDXL / FLUX, &times;4 upscaling<br>H100 (paper, Tab.&nbsp;1&ndash;2)</div>
+        <div class="lbl">with LUA<br>GPU: H100</div>
       </div>
       <div class="stat">
         <div class="hdr">User study</div>
         <div class="num"><b>81.9%</b></div>
-        <div class="lbl">preferred over SDXL direct<br>blind 2AFC, 20 annotators, 1,000 votes</div>
+        <div class="lbl">preferred over SDXL direct<br>blind 2AFC, 1,000 votes</div>
       </div>
     </div>
-    <p class="stats-note">Median per-image time, end-to-end including generation, batch&nbsp;1.
-    Paper numbers are measured on H100; the FLUX comparison comes from the release benchmark
-    (RTX 6000 Ada, 28 steps), as the paper reports no direct-FLUX baseline.</p>
 
     <figure style="margin-bottom:46px">
       <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />

@@ -300,7 +300,7 @@ figcaption .m { font-family: var(--mono); font-size: .92em; }
 /* ---------------- Stats ---------------- */
 .stats {
   display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 0; margin: 0 auto 12px;
+  gap: 0; margin: 0 auto 44px;
   border: 1px solid var(--line); border-radius: var(--radius);
   background: var(--card); overflow: hidden;
   max-width: 920px;
@@ -322,11 +322,6 @@ figcaption .m { font-family: var(--mono); font-size: .92em; }
 .stat .num .was { color: var(--muted); font-weight: 400; }
 .stat .num .arr { color: var(--muted); font-size: .82em; }
 .stat .lbl { color: var(--muted); font-size: 12px; margin-top: 5px; line-height: 1.45; }
-.stats-note {
-  text-align: center; color: var(--muted);
-  font-size: 12.5px; line-height: 1.55;
-  max-width: 78ch; margin: 0 auto 44px;
-}
 
 /* ---------------- Booktabs results table ---------------- */
 .table-wrap { overflow-x: auto; max-width: 880px; margin: 0 auto; }
