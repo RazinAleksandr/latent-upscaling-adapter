@@ -73,15 +73,15 @@
   <div class="container">
     <p class="eyebrow">Motivation</p>
     <h2 class="section-title">Why latent, not pixels?</h2>
-    <p class="lede">Native high-resolution sampling is slow and unstable, and post-hoc pixel
-    super-resolution sharpens noise it cannot undo. LUA upscales the <b>latent</b> —
-    before decoding, in a single feed-forward pass.</p>
+    <p class="lede">Native high-resolution sampling is slow and unstable, while pixel-space
+    super-resolution operates after decoding and amplifies its noise. LUA upscales the
+    <b>latent</b> itself — a single feed-forward pass before one decode.</p>
     <figure>
       <img src="static/images/latent_vs_pixel.png" alt="FLUX 1024² to 2048² comparison: base decode, bicubic latent upscaling, SwinIR pixel-space super-resolution, and LUA latent-space upscaling." />
       <figcaption>
-        <span class="fig">Fig. 1</span> — FLUX, <span class="m">1024&sup2; &rarr; 2048&sup2;</span>.
-        Left to right: base decode, bicubic latent, SwinIR (pixel-space SR), and <b>LUA (latent-space)</b>.
-        LUA recovers fine structure with the lowest added noise.
+        FLUX, <span class="m">1024&sup2; &rarr; 2048&sup2;</span>; left to right: base decode, bicubic
+        latent, SwinIR (pixel-space SR), <b>LUA (latent-space)</b>. LUA recovers fine structure with
+        the least added noise.
       </figcaption>
     </figure>
   </div>
@@ -115,19 +115,19 @@
   <div class="container">
     <p class="eyebrow">Highlights</p>
     <h2 class="section-title">One lightweight adapter, three properties</h2>
-    <p class="lede">Everything the paper claims, in one line each.</p>
     <div class="cards">
       <div class="card">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
         <h3>Single-stage latent upscaling</h3>
-        <p>Super-resolution in the compact latent — not over 64&times; more pixels. Fidelity comparable
-        to modern high-res diffusion pipelines at 2K/4K, cleaner and faster than pixel-space SR.</p>
+        <p>Super-resolution on the latent operates over 64&times; fewer spatial positions than
+        pixel-space SR, matching modern high-resolution pipelines at 2K/4K with less noise and
+        lower latency.</p>
       </div>
       <div class="card">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></svg></div>
         <h3>Multi-scale, shared backbone</h3>
-        <p>A single Swin-style backbone with jointly trained, scale-specific pixel-shuffle heads serves
-        both &times;2 and &times;4 — no separate model per factor, no retraining from scratch.</p>
+        <p>A single Swin-style backbone with jointly trained, scale-specific pixel-shuffle heads
+        serves both &times;2 and &times;4 — one model for every factor.</p>
       </div>
       <div class="card">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3l-7 7"/><path d="M3 3l7 7"/><path d="M14 14l7 7v-5"/><path d="M3 21h5l3-3"/></svg></div>
@@ -151,20 +151,20 @@
     <figure>
       <img src="static/images/teaser.png" alt="Pipeline schema: the diffusion generator produces a 64×64 latent; LUA upsamples it to 128×128 (×2) or 256×256 (×4) in latent space; a single VAE decode yields the 2K or 4K image." />
       <figcaption>
-        <span class="fig">Fig. 2</span> — <b>Drop-in integration.</b> The generator (here FLUX) emits a
+        <b>Drop-in integration.</b> The generator (here FLUX) emits a
         <span class="m">64&times;64</span> latent; LUA upsamples it to <span class="m">128&times;128</span> (&times;2)
-        or <span class="m">256&times;256</span> (&times;4) in latent space, then one VAE decode yields the
-        2K/4K image — adding only <span class="m">+0.42 s</span> / <span class="m">+2.21 s</span> on an L40S.
+        or <span class="m">256&times;256</span> (&times;4), and one VAE decode yields the 2K/4K image —
+        <span class="m">+0.42 s</span> / <span class="m">+2.21 s</span> on an L40S.
       </figcaption>
     </figure>
 
     <figure>
       <img src="static/images/training_stages.png" alt="Three-stage training curriculum on FLUX: latent feature maps (top) and 8× decoded crops (bottom) after stages I, II, and III." />
       <figcaption>
-        <span class="fig">Fig. 3</span> — <b>Three-stage curriculum.</b> Stage&nbsp;I aligns latent structure
-        and frequency spectra; Stage&nbsp;II couples latent fidelity to decoded appearance with
-        high-frequency emphasis; Stage&nbsp;III refines edges in pixel space — no re-diffusion.
-        Top: latent feature maps; bottom: 8&times; decoded crops.
+        <b>Three-stage curriculum.</b> Stage&nbsp;I aligns latent structure and frequency spectra;
+        Stage&nbsp;II couples latent fidelity to decoded appearance with high-frequency emphasis;
+        Stage&nbsp;III refines edges in pixel space, without re-diffusion. Top: latent feature maps;
+        bottom: 8&times; decoded crops.
       </figcaption>
     </figure>
   </div>
@@ -180,9 +180,9 @@
     <figure>
       <img src="static/images/cross_model.png" alt="The same LUA adapter performs ×2 latent upscaling on SDXL, SD3, and FLUX latents, decoded to 2048², with 8× zoom insets." />
       <figcaption>
-        <span class="fig">Fig. 4</span> — Cross-model &times;2 latent upscaling with a single adapter:
+        Cross-model &times;2 latent upscaling with a single adapter:
         <span class="m">128&times;128 &rarr; 256&times;256</span> latents from SDXL, SD3, and FLUX,
-        decoded to 2048&sup2;. Green boxes show 8&times; zooms.
+        decoded to 2048&sup2;. Green boxes: 8&times; zooms.
       </figcaption>
     </figure>
   </div>
@@ -193,7 +193,8 @@
   <div class="container">
     <p class="eyebrow">Results</p>
     <h2 class="section-title">Native-level fidelity at a fraction of the cost</h2>
-    <p class="lede">Clean textures and the lowest latency among compared methods at 2K and 4K.</p>
+    <p class="lede">The best single-pass fidelity and the lowest latency among compared methods
+    at 2K and 4K.</p>
 
     <div class="stats">
       <div class="stat">
@@ -221,9 +222,8 @@
     <figure style="margin-bottom:46px">
       <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />
       <figcaption>
-        <span class="fig">Fig. 5</span> — 2048&sup2; and 4096&sup2; results from identical 1024&sup2; SDXL
-        bases; red boxes: 12&times; crops, headers: per-image runtime. <b>SDXL + LUA</b>: clean textures
-        at the lowest latency.
+        2048&sup2; and 4096&sup2; results from identical 1024&sup2; SDXL bases; red boxes: 12&times; crops,
+        headers: per-image runtime. <b>SDXL + LUA</b>: clean textures at the lowest latency.
       </figcaption>
     </figure>
 
@@ -252,15 +252,15 @@
         </tbody>
       </table>
     </div>
-    <p class="table-note">Quantitative comparison on OpenImages; all methods upscale from a 1024&sup2; SDXL base.
-    Median per-image runtime on H100, batch 1. Best per column in bold; lower is better except CLIP.
-    The 1024&sup2; block, cross-model (FLUX/SD3) and ablation tables are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
+    <p class="table-note">OpenImages evaluation with an SDXL base at 1024&sup2;. Median per-image runtime
+    on H100, batch 1. Best per column in bold; lower is better except CLIP. The 1024&sup2; block,
+    cross-model, and ablation tables are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
 
     <figure class="narrow" style="margin-top:46px">
       <img src="static/images/pareto.png" alt="Pareto frontier of speed versus quality at 2048²–4096²; LUA sits on the favorable speed–quality frontier." />
       <figcaption>
-        <span class="fig">Fig. 6</span> — <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;.
-        LUA reaches near-native fidelity at a fraction of the runtime of multi-stage methods.
+        <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;. LUA reaches near-native fidelity
+        at a fraction of the runtime of multi-stage methods.
       </figcaption>
     </figure>
   </div>
@@ -293,9 +293,7 @@
     </div>
     <p class="table-note" style="margin-top:16px">
       <i>&ldquo;portrait of an elderly fisherman with weathered skin, dramatic rim lighting, 85mm photo&rdquo;</i> —
-      FLUX, 28 steps, same seed and base latent for both sides. From the release benchmark:
-      FLUX + LUA reaches 2048&sup2; in <span class="m">37.0 s</span> end-to-end vs
-      <span class="m">103.6 s</span> for direct FLUX at 2048&sup2; (<b>&times;2.80</b>, RTX 6000 Ada).
+      FLUX, 28 steps; both sides share the same seed and base latent.
     </p>
   </div>
 </section>
@@ -304,9 +302,8 @@
 <section class="wash">
   <div class="container">
     <p class="eyebrow">Gallery</p>
-    <h2 class="section-title">Fresh from the release benchmark</h2>
-    <p class="lede">FLUX + LUA &times;2 at 2048&sup2; on an RTX 6000 Ada — ~37 s per image vs
-    ~104 s direct. Click any image for full resolution.</p>
+    <h2 class="section-title">From the release benchmark</h2>
+    <p class="lede" style="max-width:none">FLUX + LUA &times;2 at 2048&sup2; on an RTX 6000 Ada — ~37 s per image vs ~104 s direct.</p>
     <div class="gallery">
       <figure>
         <a href="static/images/gallery/01_valley.jpg" target="_blank" rel="noopener" title="a misty alpine valley at golden hour, cinematic wide shot, volumetric light">
@@ -342,13 +339,10 @@
   <div class="container">
     <p class="eyebrow">Domains</p>
     <h2 class="section-title">Beyond photographs</h2>
-    <p class="lede">LUA generalizes across content domains, not just natural images.</p>
+    <p class="lede">Trained only on photographic crops, LUA upscales stylized and synthetic
+    content without retraining.</p>
     <figure>
       <img src="static/images/domain_examples.png" alt="Cross-domain generalization of LUA: upscaling to 2048² with 4× zoom crops across diverse non-photographic domains." />
-      <figcaption>
-        <span class="fig">Fig. 7</span> — Cross-domain generalization: upscaling to 2048&sup2; with
-        4&times; zoom crops across diverse, non-photographic content.
-      </figcaption>
     </figure>
   </div>
 </section>

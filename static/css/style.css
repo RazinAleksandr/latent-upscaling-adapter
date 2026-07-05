@@ -275,7 +275,6 @@ figcaption {
   max-width: 76ch;
   margin: 16px auto 0;
 }
-figcaption .fig { font-weight: 700; color: var(--ink); }
 figcaption b { color: var(--ink); font-weight: 600; }
 figcaption .m { font-family: var(--mono); font-size: .92em; }
 
