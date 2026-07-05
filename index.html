@@ -196,10 +196,10 @@
     <p class="lede">Clean textures and the lowest latency among compared methods at 2K and 4K.</p>
 
     <div class="stats">
-      <div class="stat"><div class="num">~3&times;</div><div class="lbl">faster decode + upscale</div></div>
+      <div class="stat"><div class="num">~3&times;</div><div class="lbl">lower decode + upscale time</div></div>
       <div class="stat"><div class="num">3.52 s</div><div class="lbl">SDXL + LUA @ 2048&sup2;</div></div>
       <div class="stat"><div class="num">6.87 s</div><div class="lbl">SDXL + LUA @ 4096&sup2;</div></div>
-      <div class="stat"><div class="num">81.9%</div><div class="lbl">preferred over SDXL direct<br>(2AFC, 1,000 votes)</div></div>
+      <div class="stat"><div class="num">81.9%</div><div class="lbl">preferred over SDXL direct<br>(blind 2AFC, 20 annotators, 1,000 votes)</div></div>
     </div>
 
     <div class="table-wrap">
@@ -221,7 +221,7 @@
     <p class="table-note">OpenImages test set; lower is better. Full tables with pFID, KID, CLIP and
     FLUX/SD3 results are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
 
-    <figure style="margin-top:46px">
+    <figure class="narrow" style="margin-top:46px">
       <img src="static/images/pareto.png" alt="Pareto frontier of speed versus quality at 2048²–4096²; LUA sits on the favorable speed–quality frontier." />
       <figcaption>
         <span class="fig">Fig. 5</span> — <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;.
