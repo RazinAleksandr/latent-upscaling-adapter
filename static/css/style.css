@@ -487,6 +487,7 @@ footer p { margin: 5px 0; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .gallery .wide-last { grid-column: span 2; }
   .btn { padding: 9px 15px; font-size: 14px; }
+  .conf { font-size: 11px; letter-spacing: .1em; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
