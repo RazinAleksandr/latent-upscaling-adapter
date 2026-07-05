@@ -199,27 +199,27 @@
       <div class="stat">
         <div class="hdr">SDXL &middot; 2048&sup2;</div>
         <div class="num"><span class="was">7.23 s</span> <span class="arr">&rarr;</span> <b>3.52 s</b></div>
-        <div class="lbl">direct &rarr; with LUA</div>
+        <div class="lbl">direct &rarr; with LUA<br>H100 (paper, Tab.&nbsp;1)</div>
       </div>
       <div class="stat">
-        <div class="hdr">SDXL &middot; 4096&sup2;</div>
-        <div class="num"><span class="was">148.7 s</span> <span class="arr">&rarr;</span> <b>6.87 s</b></div>
-        <div class="lbl">direct &rarr; with LUA</div>
+        <div class="hdr">FLUX &middot; 2048&sup2;</div>
+        <div class="num"><span class="was">103.6 s</span> <span class="arr">&rarr;</span> <b>37.0 s</b></div>
+        <div class="lbl">direct &rarr; with LUA<br>RTX 6000 Ada (release benchmark)</div>
       </div>
       <div class="stat">
-        <div class="hdr">FLUX &middot; 2048&sup2; / 4096&sup2;</div>
-        <div class="num"><b>29.8 / 31.9 s</b></div>
-        <div class="lbl">with LUA (&times;2 / &times;4)</div>
+        <div class="hdr">With LUA &middot; 4096&sup2;</div>
+        <div class="num"><b>6.87 / 31.9 s</b></div>
+        <div class="lbl">SDXL / FLUX, &times;4 upscaling<br>H100 (paper, Tab.&nbsp;1&ndash;2)</div>
       </div>
       <div class="stat">
         <div class="hdr">User study</div>
         <div class="num"><b>81.9%</b></div>
-        <div class="lbl">preferred over SDXL direct — blind 2AFC, 20 annotators, 1,000 votes</div>
+        <div class="lbl">preferred over SDXL direct<br>blind 2AFC, 20 annotators, 1,000 votes</div>
       </div>
     </div>
-    <p class="stats-note">All numbers from the paper (Tab.&nbsp;1&ndash;2): median per-image time on H100,
-    batch&nbsp;1, end-to-end incl. generation. The paper reports no direct-FLUX baseline; the release
-    benchmark below measures it at 2048&sup2;: 103.6&nbsp;s direct vs 37.0&nbsp;s with LUA (&times;2.80, RTX 6000 Ada).</p>
+    <p class="stats-note">Median per-image time, end-to-end including generation, batch&nbsp;1.
+    Paper numbers are measured on H100; the FLUX comparison comes from the release benchmark
+    (RTX 6000 Ada, 28 steps), as the paper reports no direct-FLUX baseline.</p>
 
     <figure style="margin-bottom:46px">
       <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />
@@ -235,15 +235,6 @@
         <thead>
           <tr><th>Resolution</th><th>Method</th><th>FID&nbsp;&darr;</th><th>pFID&nbsp;&darr;</th><th>KID&nbsp;&darr;</th><th>pKID&nbsp;&darr;</th><th>CLIP&nbsp;&uarr;</th><th>Time&nbsp;(s)&nbsp;&darr;</th></tr>
         </thead>
-        <tbody>
-          <tr><td rowspan="6">1024&times;1024</td>
-              <td>HiDiffusion</td><td>232.55</td><td>230.39</td><td>0.0211</td><td>0.0288</td><td>0.695</td><td>1.54</td></tr>
-          <tr><td>DemoFusion</td><td>195.82</td><td>193.99</td><td>0.0153</td><td>0.0229</td><td>0.725</td><td>2.04</td></tr>
-          <tr><td>LSRNA&ndash;DemoFusion</td><td>194.55</td><td>192.73</td><td class="best">0.0151</td><td>0.0228</td><td>0.734</td><td>3.09</td></tr>
-          <tr><td>SDXL (Direct)</td><td class="best">194.53</td><td>192.71</td><td class="best">0.0151</td><td class="best">0.0225</td><td>0.731</td><td>1.61</td></tr>
-          <tr><td>SDXL + SwinIR</td><td>210.40</td><td>204.23</td><td>0.0313</td><td>0.0411</td><td>0.694</td><td>2.47</td></tr>
-          <tr class="lua"><td>SDXL + LUA (ours)</td><td>209.80</td><td class="best">191.75</td><td>0.0330</td><td>0.0426</td><td class="best">0.738</td><td class="best">1.42</td></tr>
-        </tbody>
         <tbody>
           <tr><td rowspan="6">2048&times;2048</td>
               <td>HiDiffusion</td><td>200.72</td><td>114.30</td><td>0.0030</td><td>0.0090</td><td>0.738</td><td>4.97</td></tr>
@@ -264,9 +255,9 @@
         </tbody>
       </table>
     </div>
-    <p class="table-note">Quantitative comparison on OpenImages; SDXL base 512&sup2; (1K), 1024&sup2; (2K/4K).
+    <p class="table-note">Quantitative comparison on OpenImages; all methods upscale from a 1024&sup2; SDXL base.
     Median per-image runtime on H100, batch 1. Best per column in bold; lower is better except CLIP.
-    Cross-model (FLUX/SD3) and ablation tables are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
+    The 1024&sup2; block, cross-model (FLUX/SD3) and ablation tables are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
 
     <figure class="narrow" style="margin-top:46px">
       <img src="static/images/pareto.png" alt="Pareto frontier of speed versus quality at 2048²–4096²; LUA sits on the favorable speed–quality frontier." />
