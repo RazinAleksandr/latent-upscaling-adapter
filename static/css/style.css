@@ -300,20 +300,33 @@ figcaption .m { font-family: var(--mono); font-size: .92em; }
 /* ---------------- Stats ---------------- */
 .stats {
   display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 0; margin: 0 auto 46px;
+  gap: 0; margin: 0 auto 12px;
   border: 1px solid var(--line); border-radius: var(--radius);
   background: var(--card); overflow: hidden;
-  max-width: 880px;
+  max-width: 920px;
 }
-.stat { flex: 1 1 170px; padding: 15px 14px 13px; text-align: center; border-left: 1px solid var(--line); }
+.stat { flex: 1 1 170px; padding: 16px 13px 14px; text-align: center; border-left: 1px solid var(--line); }
 .stat:first-child { border-left: none; }
-.stat .num {
-  font: 700 clamp(19px, 2.2vw, 24px)/1.15 var(--serif);
-  font-variant-numeric: tabular-nums;
-  color: var(--accent-deep);
-  white-space: nowrap;
+.stat .hdr {
+  font: 700 11.5px/1 var(--sans);
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
-.stat .lbl { color: var(--muted); font-size: 12.5px; margin-top: 5px; line-height: 1.45; }
+.stat .num {
+  font: 600 clamp(16.5px, 1.9vw, 20px)/1.3 var(--serif);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.stat .num b { color: var(--accent-deep); font-weight: 700; }
+.stat .num .was { color: var(--muted); font-weight: 400; }
+.stat .num .arr { color: var(--muted); font-size: .82em; }
+.stat .lbl { color: var(--muted); font-size: 12px; margin-top: 5px; line-height: 1.45; }
+.stats-note {
+  text-align: center; color: var(--muted);
+  font-size: 12.5px; line-height: 1.55;
+  max-width: 78ch; margin: 0 auto 44px;
+}
 
 /* ---------------- Booktabs results table ---------------- */
 .table-wrap { overflow-x: auto; max-width: 880px; margin: 0 auto; }

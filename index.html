@@ -196,11 +196,35 @@
     <p class="lede">Clean textures and the lowest latency among compared methods at 2K and 4K.</p>
 
     <div class="stats">
-      <div class="stat"><div class="num">~3&times;</div><div class="lbl">lower decode + upscale time</div></div>
-      <div class="stat"><div class="num">3.52 / 6.87 s</div><div class="lbl">SDXL + LUA<br>@ 2048&sup2; / 4096&sup2;</div></div>
-      <div class="stat"><div class="num">29.8 / 31.9 s</div><div class="lbl">FLUX + LUA<br>@ 2048&sup2; / 4096&sup2;</div></div>
-      <div class="stat"><div class="num">81.9%</div><div class="lbl">preferred over SDXL direct<br>(blind 2AFC, 20 annotators, 1,000 votes)</div></div>
+      <div class="stat">
+        <div class="hdr">SDXL &middot; 2048&sup2;</div>
+        <div class="num"><span class="was">7.23 s</span> <span class="arr">&rarr;</span> <b>3.52 s</b></div>
+        <div class="lbl">direct &rarr; with LUA</div>
+      </div>
+      <div class="stat">
+        <div class="hdr">SDXL &middot; 4096&sup2;</div>
+        <div class="num"><span class="was">148.7 s</span> <span class="arr">&rarr;</span> <b>6.87 s</b></div>
+        <div class="lbl">direct &rarr; with LUA</div>
+      </div>
+      <div class="stat">
+        <div class="hdr">FLUX &middot; 2048&sup2;</div>
+        <div class="num"><span class="was">103.6 s</span> <span class="arr">&rarr;</span> <b>37.0 s</b></div>
+        <div class="lbl">direct &rarr; with LUA</div>
+      </div>
+      <div class="stat">
+        <div class="hdr">FLUX &middot; 4096&sup2;</div>
+        <div class="num"><span class="was">15&ndash;20 min</span> <span class="arr">&rarr;</span> <b>42.3 s</b></div>
+        <div class="lbl">direct (est.) &rarr; with LUA</div>
+      </div>
+      <div class="stat">
+        <div class="hdr">User study</div>
+        <div class="num"><b>81.9%</b></div>
+        <div class="lbl">preferred over SDXL direct — blind 2AFC, 20 annotators, 1,000 votes</div>
+      </div>
     </div>
+    <p class="stats-note">SDXL: paper Tab.&nbsp;1, median per-image time on H100. FLUX: release benchmark
+    (RTX 6000 Ada, 28 steps), end-to-end incl. generation; direct FLUX @ 4096&sup2; was not run —
+    estimated 15&ndash;20 min per image.</p>
 
     <figure style="margin-bottom:46px">
       <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />
