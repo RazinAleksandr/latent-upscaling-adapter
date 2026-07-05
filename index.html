@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LUA: Latent Upscaling Adapter for Diffusion-Based Image Synthesis</title>
+  <meta name="description" content="LUA performs super-resolution directly on a diffusion model's latent code before VAE decoding — single-pass, ~3× faster high-resolution synthesis at 2K/4K, transferable across SDXL, SD3, and FLUX. ECCV 2026." />
+
+  <!-- Open Graph / Twitter (uses the teaser as the share image) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="LUA: Latent Upscaling Adapter for Diffusion-Based Image Synthesis" />
+  <meta property="og:description" content="Single-pass latent-space super-resolution for diffusion models. ~3× faster high-res synthesis at 2K/4K, transferable across SDXL, SD3, and FLUX. ECCV 2026." />
+  <meta property="og:image" content="static/images/teaser.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero">
+  <div class="container">
+    <span class="badge">ECCV 2026</span>
+    <h1 class="title"><span class="lua">LUA</span>: Latent Upscaling Adapter<br />for Diffusion-Based Image Synthesis</h1>
+    <p class="subtitle">Upscale in latent space, not pixels — single-pass, ~3× faster high-resolution synthesis.</p>
+
+    <p class="authors">
+      <span class="author"><a href="https://orcid.org/0009-0007-8396-2801">Aleksandr Razin</a><sup>1,&#9733;,&dagger;</sup></span>
+      <span class="author"><a href="https://orcid.org/0009-0006-5218-6283">Danil Kazantsev</a><sup>2,&#9733;</sup></span>
+      <span class="author"><a href="https://orcid.org/0000-0002-3308-8825">Ilya Makarov</a><sup>3</sup></span>
+    </p>
+    <p class="affil">
+      <span class="num">1</span>&nbsp;INSAIT, Sofia University “St. Kliment Ohridski”, Bulgaria&nbsp;&nbsp;·&nbsp;&nbsp;
+      <span class="num">2</span>&nbsp;Independent Researcher, Yerevan, Armenia&nbsp;&nbsp;·&nbsp;&nbsp;
+      <span class="num">3</span>&nbsp;iMak AI Lab, Ngerulmud, Palau
+    </p>
+    <p class="contrib-note"><span class="star">&#9733;</span> Equal contribution&nbsp;&nbsp;·&nbsp;&nbsp;<span class="star">&dagger;</span> Corresponding author</p>
+
+    <nav class="links">
+      <a class="btn primary" href="https://arxiv.org/abs/2511.10629" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h12v2H3v-2zm0 5h12v2H3v-2z"/></svg>
+        arXiv
+      </a>
+      <a class="btn" href="https://arxiv.org/pdf/2511.10629" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5L14 3.5zM8 13h2.2a2 2 0 1 1 0 4H9v2H8v-6zm1 1v2h1.2a1 1 0 1 0 0-2H9zm5-1h2v1h-2v1.4h1.8v1H16V19h-1v-6h-1z"/></svg>
+        PDF
+      </a>
+      <a class="btn" href="https://huggingface.co/papers/2511.10629" target="_blank" rel="noopener">
+        <span style="font-size:18px;line-height:1">🤗</span>
+        Hugging Face
+      </a>
+      <a class="btn" href="https://github.com/vaskers5/LUA" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+        Code (inference)
+      </a>
+      <span class="btn disabled" title="Training code will be released soon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+        Training code <span class="soon">Soon</span>
+      </span>
+      <a class="btn" href="#bibtex">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-3-7 3V5a2 2 0 0 1 2-2z"/></svg>
+        BibTeX
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================ TEASER ============================ -->
+<section style="padding-top:32px">
+  <div class="container">
+    <figure>
+      <img src="static/images/teaser.png" alt="LUA integrates into a diffusion pipeline: the generator emits a low-resolution latent, LUA upsamples it ×2 or ×4 in latent space, and a single VAE decode produces the high-resolution image." />
+      <figcaption>
+        <b>LUA drops into any latent diffusion pipeline without retraining.</b> The generator (e.g. FLUX) produces a
+        64&times;64 latent; LUA upsamples it to 128&times;128 (&times;2) or 256&times;256 (&times;4) in
+        <i>latent space</i>, then a single VAE decode yields the final 2K/4K image — adding only
+        +0.42&nbsp;s&nbsp;(&times;2) / +2.21&nbsp;s&nbsp;(&times;4) on an L40S.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Abstract</h2>
+    <div class="narrow abstract">
+      <p>Generating high-resolution images with latent diffusion models is limited by the cost of
+      high-resolution denoising, while post-hoc super-resolution introduces artifacts and additional
+      latency by operating after decoding. We present the <b>Latent Upscaling Adapter (LUA)</b>, a
+      lightweight module that performs super-resolution directly on the generator's latent code
+      before the final VAE decoding step. LUA integrates as a drop-in component requiring no
+      modifications to the base model or additional diffusion stages, enabling high-resolution
+      synthesis through a single feed-forward pass in latent space.</p>
+      <p>A shared Swin-style backbone with scale-specific pixel-shuffle heads supports &times;2 and
+      &times;4 factors with nearly <b>3&times; lower decoding and upscaling time</b>. Because LUA
+      operates directly on latents, it transfers across diffusion systems — including
+      <b>SDXL, SD3, and FLUX</b> — through architecture-level reuse, adapting only the input
+      convolution with brief fine-tuning rather than retraining from scratch. Extensive experiments
+      demonstrate that LUA closely matches the fidelity of native high-resolution generation at
+      <b>2K and 4K</b> while offering a practical and efficient path to scalable image synthesis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HIGHLIGHTS ============================ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Highlights</h2>
+    <p class="section-lead">One lightweight adapter — three things it gets right.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h3>Single-stage latent upscaling</h3>
+        <p>Super-resolution in the compact latent — not over 64&times; more pixels. Quality comparable
+        to modern high-res diffusion pipelines at 2K/4K, cleaner and faster than pixel-space SR.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></svg></div>
+        <h3>Multi-scale, shared backbone</h3>
+        <p>A single Swin-style backbone with jointly trained, scale-specific heads serves both
+        &times;2 and &times;4 — no separate model per factor, no retraining from scratch.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3l-7 7"/><path d="M3 3l7 7"/><path d="M14 14l7 7v-5"/><path d="M3 21h5l3-3"/></svg></div>
+        <h3>Cross-model generalization</h3>
+        <p>The same backbone runs on SDXL, SD3, and FLUX by swapping only the first convolution to
+        match latent channels, then briefly fine-tuning — reuse, not retrain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHY LATENT ============================ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Why latent, not pixels?</h2>
+    <p class="section-lead">Post-hoc pixel super-resolution amplifies noise and adds latency after decoding.
+    Upscaling the latent keeps detail clean and the pipeline single-pass.</p>
+    <figure>
+      <img src="static/images/latent_vs_pixel.png" alt="FLUX 1024² to 2048²: base decode, bicubic-latent, SwinIR pixel-space super-resolution, and LUA latent-space upscaling compared side by side." />
+      <figcaption>
+        FLUX, 1024&sup2;&nbsp;&rarr;&nbsp;2048&sup2;. Left&nbsp;to&nbsp;right: base decode, bicubic latent,
+        SwinIR (pixel-space SR), and <b>LUA (latent-space)</b>. LUA preserves fine detail with the
+        lowest added noise.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Method</h2>
+    <p class="section-lead">LUA sits between the generator and the VAE decoder. It takes the
+    low-resolution latent, upsamples it (&times;2 / &times;4) in one feed-forward pass, and a single
+    decode produces the high-resolution image.</p>
+
+    <figure>
+      <img src="static/images/architecture.jpg" alt="LUA architecture: a SwinIR-style backbone with a 1×1 input convolution and scale-specific pixel-shuffle heads for ×2 and ×4 upscaling." />
+      <figcaption>
+        <b>Architecture.</b> A SwinIR-style (Swin Transformer) backbone with a 1&times;1 input
+        convolution and scale-specific <i>pixel-shuffle</i> heads. The 1&times;1 conv is the only
+        part that changes to match a new model's latent channel count.
+      </figcaption>
+    </figure>
+
+    <figure style="margin-top:40px">
+      <img src="static/images/training_stages.png" alt="Three-stage training curriculum visualized on FLUX latents and decoded crops, with quality improving from stage I to stage III." />
+      <figcaption>
+        <b>Three-stage curriculum.</b> Stage&nbsp;I aligns latent structure and frequency spectra;
+        Stage&nbsp;II couples latent fidelity to decoded appearance with high-frequency emphasis;
+        Stage&nbsp;III refines edges in pixel space — no re-diffusion. Top: latent feature maps;
+        bottom: 8&times; decoded crops.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ CROSS-MODEL ============================ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">One adapter, many models</h2>
+    <p class="section-lead">The same LUA backbone upscales latents from SDXL, SD3, and FLUX — change
+    only the input convolution and fine-tune briefly.</p>
+    <figure>
+      <img src="static/images/cross_model.png" alt="The same LUA adapter performs ×2 latent upscaling (128×128 to 256×256) on SDXL, SD3, and FLUX latents, decoded to 2048², with 8× zoom insets." />
+      <figcaption>
+        Cross-model &times;2 latent upscaling with a single adapter: 128&times;128&nbsp;&rarr;&nbsp;256&times;256
+        latents from <b>SDXL, SD3, and FLUX</b>, decoded to 2048&sup2;. Green boxes show 8&times; zooms.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ RESULTS ============================ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Results</h2>
+    <p class="section-lead">Cleaner textures, native-level fidelity, and the lowest latency among
+    compared methods at 2K and 4K.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="num">~3×</div><div class="lbl">faster decode + upscale</div></div>
+      <div class="stat"><div class="num">3.52 s</div><div class="lbl">SDXL+LUA @ 2048²</div></div>
+      <div class="stat"><div class="num">6.87 s</div><div class="lbl">SDXL+LUA @ 4096²</div></div>
+      <div class="stat"><div class="num">81.9%</div><div class="lbl">preferred over SDXL direct</div></div>
+    </div>
+
+    <figure style="margin-bottom:36px">
+      <img src="static/images/qualitative.png" alt="Qualitative comparison at 2048² and 4096² from identical 1024² SDXL bases, with 12× crops; SDXL+LUA produces clean textures at the lowest latency." />
+      <figcaption>
+        Qualitative comparison at 2048&sup2;/4096&sup2; from identical 1024&sup2; SDXL bases (red boxes:
+        12&times; crops). <b>SDXL+LUA</b> yields clean textures at the lowest latency, while direct
+        high-resolution sampling degrades into artifacts.
+      </figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="results">
+        <thead>
+          <tr><th>Method (SDXL base)</th><th>Resolution</th><th>Time&nbsp;↓</th><th>FID&nbsp;↓</th></tr>
+        </thead>
+        <tbody>
+          <tr class="lua"><td>SDXL + LUA</td><td>2048²</td><td class="best">3.52 s</td><td class="best">180.80</td></tr>
+          <tr><td>SDXL + SwinIR (pixel SR)</td><td>2048²</td><td>6.29 s</td><td>184.80</td></tr>
+          <tr><td>SDXL direct</td><td>2048²</td><td>7.23 s</td><td>207.40</td></tr>
+          <tr><td>LSRNA-DemoFusion</td><td>2048²</td><td>20.77 s</td><td>181.24</td></tr>
+          <tr class="lua"><td>SDXL + LUA</td><td>4096²</td><td class="best">6.87 s</td><td class="best">176.90</td></tr>
+          <tr><td>SDXL direct</td><td>4096²</td><td>—</td><td>280.42</td></tr>
+          <tr><td>LSRNA-DemoFusion</td><td>4096²</td><td>91.64 s</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">OpenImages test set. Lower is better. Full tables, pFID/KID/CLIP, and FLUX/SD3
+    results are in the <a href="https://arxiv.org/abs/2511.10629">paper</a>.</p>
+
+    <figure style="margin-top:40px">
+      <img src="static/images/pareto.png" alt="Pareto frontier of speed versus quality at 2048–4096²; LUA sits on the favorable speed–quality frontier." />
+      <figcaption>
+        <b>Speed–quality Pareto frontier</b> at 2048&sup2;–4096&sup2;. LUA reaches near-native fidelity
+        at a fraction of the runtime of multi-stage methods.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ INTERACTIVE SLIDER (placeholder demo) ============================ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Drag to compare</h2>
+    <p class="section-lead">Base decode vs. LUA upscaling. Drag the handle to reveal the difference.</p>
+
+    <!-- TODO(asset): Replace the two SVG placeholders below with a REAL, pixel-aligned crop pair:
+         static/images/slider/slider_before.png  — base decode (e.g. 1024² upscaled with bicubic)
+         static/images/slider/slider_after.png   — LUA ×4 output of the SAME crop, same display size.
+         Use the same scene/region so the wipe lines up. Then update the two src= attributes. -->
+    <div class="slider" id="ba-slider">
+      <img class="after"  src="static/images/slider/slider_after.svg"  alt="After: LUA upscaled" />
+      <img class="before" src="static/images/slider/slider_before.svg" alt="Before: base decode" />
+      <div class="handle"></div>
+      <span class="lbl l">Base decode</span>
+      <span class="lbl r">LUA ×4</span>
+    </div>
+    <p class="table-note" style="margin-top:14px">
+      ⓘ Placeholder demo. Swap in a real base-vs-LUA crop pair at
+      <code>static/images/slider/</code> (see the comment in <code>index.html</code>).
+    </p>
+  </div>
+</section>
+
+<!-- ============================ MORE RESULTS / GALLERY ============================ -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Beyond photographs</h2>
+    <p class="section-lead">LUA generalizes across content domains, not just natural images.</p>
+    <figure style="margin-bottom:36px">
+      <img src="static/images/domain_examples.png" alt="Cross-domain generalization of LUA: upscaling to 2048² with 4× zoom crops across diverse non-photographic domains." />
+      <figcaption>
+        Cross-domain generalization — upscaling to 2048&sup2; with 4&times; zoom crops across diverse,
+        non-photographic content.
+      </figcaption>
+    </figure>
+
+    <!-- TODO(asset): Optional extra results gallery. Drop in additional 2K/4K examples
+         (good sources: figures/supplementary/flux_2k_1.pdf and flux_2k_2.pdf, converted to PNG).
+         Replace each .ph-cell below with <img src="static/images/gallery/your_example.png"> . -->
+    <div class="placeholder">
+      <span class="tag">Add more visuals</span>
+      <h3>Extra results gallery (optional)</h3>
+      <p>Add a grid of more 2K/4K examples here. Convert
+      <code>figures/supplementary/flux_2k_1.pdf</code> / <code>flux_2k_2.pdf</code> to PNG and replace
+      the cells below, or delete this block if not needed.</p>
+      <div class="gallery" style="margin-top:18px">
+        <div class="ph-cell">example&nbsp;1<br>(2K/4K crop)</div>
+        <div class="ph-cell">example&nbsp;2<br>(2K/4K crop)</div>
+        <div class="ph-cell">example&nbsp;3<br>(2K/4K crop)</div>
+      </div>
+    </div>
+
+    <!-- TODO(asset): Optional hero demo video/GIF of a latent upscaling pass.
+         Drop a file at static/videos/demo.mp4 and replace this block with:
+         <video src="static/videos/demo.mp4" autoplay muted loop playsinline style="width:100%;border-radius:16px"></video> -->
+    <div class="placeholder" style="margin-top:24px">
+      <span class="tag">Optional video</span>
+      <h3>Demo video / GIF</h3>
+      <p>Optional: a short autoplay clip of the latent upscaling pass (low-res latent → LUA → decoded
+      4K). Drop it at <code>static/videos/demo.mp4</code> and swap in a <code>&lt;video&gt;</code> tag.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LIMITATIONS ============================ -->
+<section class="alt">
+  <div class="container">
+    <h2 class="section-title">Limitations</h2>
+    <p class="section-lead">LUA is a deterministic adapter — it faithfully upscales what the generator
+    produced, including its mistakes.</p>
+    <div class="narrow">
+      <ul class="limits">
+        <li><b>Preserved hallucinations</b><span>Errors already present in the base latent are upscaled, not corrected — a deterministic adapter cannot invent content the generator did not produce.</span></li>
+        <li><b>Texture over-smoothing</b><span>Reduced by training on textured crops, but it can still appear in some scenes.</span></li>
+        <li><b>Dead pixels</b><span>Out-of-range latents decode to localized corruptions; mitigated by latent clamping.</span></li>
+        <li><b>Strongest at 2K/4K</b><span>At 1024² the input latent is only 64×64 (VAE stride 8), limiting recoverable detail in the ×2 setting; LUA shines where latent information density is higher.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BIBTEX ============================ -->
+<section id="bibtex">
+  <div class="container">
+    <h2 class="section-title">Citation</h2>
+    <p class="section-lead">arXiv: <a href="https://arxiv.org/abs/2511.10629">2511.10629</a>. To appear at ECCV 2026.</p>
+    <div class="bibtex-wrap">
+      <button class="copy-btn" id="copy-bibtex" type="button">Copy</button>
+<pre class="bibtex" id="bibtex-text">@inproceedings{razin2026lua,
+  title     = {{LUA}: Latent Upscaling Adapter for Diffusion-Based Image Synthesis},
+  author    = {Razin, Aleksandr and Kazantsev, Danil and Makarov, Ilya},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}
+
+@article{razin2026lua_arxiv,
+  title   = {{LUA}: Latent Upscaling Adapter for Diffusion-Based Image Synthesis},
+  author  = {Razin, Aleksandr and Kazantsev, Danil and Makarov, Ilya},
+  journal = {arXiv preprint arXiv:2511.10629},
+  year    = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="container">
+    <p>We thank Pavel Chizhov (CAIRO, THWS, Germany) for discussions and manuscript revisions.</p>
+    <p>Correspondence: <a href="mailto:razin.x.aleks@gmail.com">razin.x.aleks@gmail.com</a></p>
+    <p style="opacity:.8;margin-top:14px">Page design inspired by the Nerfies and CleanDIFT project pages. Content © the authors.</p>
+  </div>
+</footer>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>
