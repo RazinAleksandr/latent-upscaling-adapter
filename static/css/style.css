@@ -262,6 +262,7 @@ figure { margin: 0 auto; text-align: center; }
 figure + figure { margin-top: 48px; }
 .gallery figure { margin: 0; }   /* grid gap spaces gallery tiles, not the stacked-figure margin */
 figure img {
+  max-width: min(100%, 900px);   /* a notch narrower than the container */
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: #fff;
