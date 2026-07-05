@@ -2,6 +2,22 @@
 (function () {
   "use strict";
 
+  /* ---- Light/dark theme toggle ---- */
+  var tbtn = document.getElementById("theme-toggle");
+  if (tbtn) {
+    tbtn.addEventListener("click", function () {
+      var root = document.documentElement;
+      var cur = root.getAttribute("data-theme");
+      if (!cur) {
+        cur = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark" : "light";
+      }
+      var next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  }
+
   /* ---- Sticky nav + reading progress ---- */
   var nav = document.getElementById("topnav");
   var prog = document.getElementById("scroll-progress");
