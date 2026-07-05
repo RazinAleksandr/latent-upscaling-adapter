@@ -3,7 +3,8 @@
 Project page for **"LUA: Latent Upscaling Adapter for Diffusion-Based Image Synthesis"** (ECCV 2026).
 
 A self-contained static site — plain HTML + CSS + a little vanilla JS, **no build step and no
-external dependencies** (all assets are local, so it loads offline and on any static host).
+external requests**. The one webfont (STIX Two Text, latin subset, OFL license) is embedded in
+`static/css/style.css` as a data URI, so the page loads offline and on any static host.
 
 - 📄 Paper (arXiv): https://arxiv.org/abs/2511.10629
 - 🤗 Hugging Face: https://huggingface.co/papers/2511.10629
@@ -15,12 +16,16 @@ external dependencies** (all assets are local, so it loads offline and on any st
 .
 ├── index.html              # the page
 ├── favicon.svg
-├── .nojekyll               # tells GitHub Pages to serve static/ raw (no Jekyll)
+├── .nojekyll               # tells GitHub Pages to serve files raw (no Jekyll)
+├── scripts/
+│   └── prepare_images.py   # regenerates compare/ + gallery/ JPEGs from the benchmark folder
 ├── static/
-│   ├── css/style.css
-│   ├── js/main.js          # copy-BibTeX button + before/after slider
-│   └── images/             # figures (converted from the paper PDFs)
-│       └── slider/         # before/after slider assets (currently SVG placeholders)
+│   ├── css/style.css       # design system + embedded STIX Two Text
+│   ├── js/main.js          # drag-compare slider, zoom toggle, copy-BibTeX
+│   └── images/
+│       ├── *.png / *.jpg   # paper figures (converted from the paper's vector PDFs)
+│       ├── compare/        # drag-compare pair: base 1024² vs LUA ×2 @ 2048² (same latent)
+│       └── gallery/        # FLUX+LUA 2048² benchmark outputs (thumb_* + full-res)
 └── README.md
 ```
 
@@ -35,26 +40,24 @@ python3 -m http.server 8000   # then visit http://localhost:8000
 2. Repo **Settings → Pages → Build and deployment**: source **Deploy from a branch**,
    branch **`main`**, folder **`/ (root)`**, then **Save**.
 3. The site goes live at `https://<user>.github.io/<repo>/` within a minute or two.
+4. After the first deploy, set the `og:image` meta tag in `index.html` to the **absolute** URL
+   (`https://<user>.github.io/<repo>/static/images/latent_vs_pixel.png`) so link previews work
+   on X/Slack/etc.
 
-> Tip: for a `username.github.io/LUA`-style URL, name the repo `LUA`. The `.nojekyll` file is
-> already included so the `static/` assets are served as-is.
-
-## Placeholders to fill in (optional)
-The page works as-is, but a few spots are marked for richer visuals. Search `index.html` for
-`TODO(asset)`:
-
-| Spot | What to add |
-|---|---|
-| **Before/after slider** | Replace `static/images/slider/slider_before.svg` and `slider_after.svg` with a **pixel-aligned crop pair** (`.png`): the base decode and the LUA ×4 output of the *same* region, at the same display size. Then update the two `src=` attributes. |
-| **Extra results gallery** | Convert `figures/supplementary/flux_2k_1.pdf` / `flux_2k_2.pdf` to PNG and drop them into the gallery grid (or delete the block). |
-| **Demo video** | Optionally add `static/videos/demo.mp4` (a latent-upscaling pass) and swap the placeholder for a `<video>` tag. |
-
-## Updating figures
-Figures were converted from the paper's vector PDFs with `pdftocairo`:
+## Regenerating images
+Paper figures were converted from the paper's vector PDFs:
 ```bash
 pdftocairo -png -scale-to 1600 -singlefile path/to/figure.pdf static/images/name
 ```
-Re-run with a smaller `-scale-to` value if a PNG is too large.
+
+The drag-compare pair and gallery come from the release benchmark
+(`../2026-07-04-benchmark`, FLUX, 28 steps, RTX 6000 Ada — see its `report.md`):
+```bash
+python3 scripts/prepare_images.py   # requires Pillow
+```
+To swap the drag-compare scene, change `SLIDER_SCENE` in the script and update the two
+`static/images/compare/...` paths plus the caption in `index.html`. The slider's default
+"detail" crop is set by `--zoom` / `transform-origin` on `.slider img` in `style.css`.
 
 ## Citation
 See the BibTeX block at the bottom of the page (`#bibtex`). The proceedings entry should be

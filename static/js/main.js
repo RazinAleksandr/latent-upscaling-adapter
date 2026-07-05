@@ -1,4 +1,4 @@
-/* LUA project page — copy-to-clipboard + before/after slider. No dependencies. */
+/* LUA project page — BibTeX copy + drag-compare slider. No dependencies. */
 (function () {
   "use strict";
 
@@ -7,16 +7,11 @@
   var pre = document.getElementById("bibtex-text");
   if (btn && pre) {
     btn.addEventListener("click", function () {
-      var text = pre.innerText;
       var done = function () {
-        var old = btn.textContent;
-        btn.textContent = "Copied!";
-        setTimeout(function () { btn.textContent = old; }, 1500);
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = "Copy"; }, 1500);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, fallback);
-      } else { fallback(); }
-      function fallback() {
+      var fallback = function () {
         var r = document.createRange();
         r.selectNode(pre);
         var sel = window.getSelection();
@@ -24,41 +19,66 @@
         sel.addRange(r);
         try { document.execCommand("copy"); done(); } catch (e) {}
         sel.removeAllRanges();
-      }
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(pre.innerText).then(done, fallback);
+      } else { fallback(); }
     });
   }
 
-  /* ---- Before/after image comparison slider ---- */
+  /* ---- Drag-compare slider ---- */
   var slider = document.getElementById("ba-slider");
   if (slider) {
-    var before = slider.querySelector(".before");
-    var handle = slider.querySelector(".handle");
+    var before = slider.querySelector(".pane.before");
+    var divider = slider.querySelector(".divider");
+    var knob = slider.querySelector(".knob");
+    var pos = 50;
     var dragging = false;
 
-    function setPos(clientX) {
+    function render() {
+      before.style.clipPath = "inset(0 " + (100 - pos) + "% 0 0)";
+      divider.style.left = pos + "%";
+      knob.style.left = pos + "%";
+      slider.setAttribute("aria-valuenow", String(Math.round(pos)));
+    }
+    function setFromClientX(x) {
       var rect = slider.getBoundingClientRect();
-      var pct = ((clientX - rect.left) / rect.width) * 100;
-      pct = Math.max(0, Math.min(100, pct));
-      before.style.clipPath = "inset(0 " + (100 - pct) + "% 0 0)";
-      handle.style.left = pct + "%";
-    }
-    function start(e) { dragging = true; move(e); }
-    function stop() { dragging = false; }
-    function move(e) {
-      if (!dragging) return;
-      var x = e.touches ? e.touches[0].clientX : e.clientX;
-      setPos(x);
-      if (e.cancelable) e.preventDefault();
+      pos = Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100));
+      render();
     }
 
-    slider.addEventListener("mousedown", start);
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", stop);
-    slider.addEventListener("touchstart", start, { passive: false });
-    window.addEventListener("touchmove", move, { passive: false });
-    window.addEventListener("touchend", stop);
+    slider.addEventListener("pointerdown", function (e) {
+      dragging = true;
+      slider.setPointerCapture(e.pointerId);
+      setFromClientX(e.clientX);
+    });
+    slider.addEventListener("pointermove", function (e) {
+      if (dragging) setFromClientX(e.clientX);
+    });
+    slider.addEventListener("pointerup", function () { dragging = false; });
+    slider.addEventListener("pointercancel", function () { dragging = false; });
 
-    // start at the midpoint
-    before.style.clipPath = "inset(0 50% 0 0)";
+    slider.addEventListener("keydown", function (e) {
+      var step = e.shiftKey ? 10 : 2;
+      if (e.key === "ArrowLeft") { pos = Math.max(0, pos - step); render(); e.preventDefault(); }
+      if (e.key === "ArrowRight") { pos = Math.min(100, pos + step); render(); e.preventDefault(); }
+      if (e.key === "Home") { pos = 0; render(); e.preventDefault(); }
+      if (e.key === "End") { pos = 100; render(); e.preventDefault(); }
+    });
+
+    render();
+
+    /* Zoom chips: detail crop vs whole image */
+    var chipDetail = document.getElementById("zoom-detail");
+    var chipFit = document.getElementById("zoom-fit");
+    if (chipDetail && chipFit) {
+      var setZoom = function (fit) {
+        slider.classList.toggle("fit", fit);
+        chipDetail.setAttribute("aria-pressed", String(!fit));
+        chipFit.setAttribute("aria-pressed", String(fit));
+      };
+      chipDetail.addEventListener("click", function () { setZoom(false); });
+      chipFit.addEventListener("click", function () { setZoom(true); });
+    }
   }
 })();
