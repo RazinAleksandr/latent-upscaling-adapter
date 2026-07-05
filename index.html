@@ -308,8 +308,8 @@
       </div>
       <div class="divider"></div>
       <div class="knob"></div>
-      <span class="tag l" id="tag-left">Base 1024&sup2; &rarr; 2K (stretched)</span>
-      <span class="tag r">LUA &times;2 @ 2048&sup2;</span>
+      <span class="tag l" id="tag-left">Base 1024&sup2; &middot; 20.4 s</span>
+      <span class="tag r">LUA &times;2 @ 2048&sup2; &middot; 37.2 s</span>
     </div>
     <div class="chips" role="group" aria-label="Comparison reference">
       <button class="chip" type="button" id="cmp-base" aria-pressed="true">vs base 1024&sup2;</button>
@@ -317,7 +317,8 @@
     </div>
     <p class="table-note" style="margin-top:16px">
       <i>&ldquo;macro shot of a honeybee on a sunflower, dewdrops, shallow depth of field&rdquo;</i> —
-      FLUX, 28 steps. <b>vs base</b> shares the seed and base latent (pixel-aligned, shown magnified);
+      FLUX, 28 steps; end-to-end times on an RTX 6000 Ada.
+      <b>vs base</b> shares the seed and base latent (pixel-aligned, shown magnified);
       <b>vs direct</b> is native 2048&sup2; sampling of the same prompt — compositions differ, shown in full.
     </p>
   </div>
