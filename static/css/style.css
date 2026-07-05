@@ -172,7 +172,7 @@ p { margin: 0 0 16px; }
 .authors a:hover { color: var(--accent); text-decoration: none; }
 .authors .author { white-space: nowrap; margin: 0 .5em; }
 .authors sup { color: var(--accent); font-weight: 700; font-size: .72em; }
-.orcid { display: inline-block; width: 14px; height: 14px; vertical-align: -1.5px; margin-left: 3px; opacity: .85; }
+.a-ico { display: inline-block; width: 13px; height: 13px; vertical-align: -1px; margin-left: 4px; opacity: .9; }
 .affil { color: var(--muted); font-size: 15px; margin: 0 auto 4px; }
 .affil .num { color: var(--accent); font-weight: 700; }
 .contrib-note { color: var(--muted); font-size: 13.5px; margin: 2px auto 0; }
