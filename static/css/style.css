@@ -15,20 +15,20 @@
 
 /* ---------------- Tokens ---------------- */
 :root {
-  --paper:       #f7f8fb;
+  --paper:       #faf9f7;
   --card:        #ffffff;
-  --wash:        #edf0f7;
-  --ink:         #131722;
-  --muted:       #5c6374;
-  --line:        #e2e5ee;
-  --line-strong: #c9cede;
-  --accent:      #2445d8;
-  --accent-deep: #16308f;
-  --accent-wash: rgba(36, 69, 216, .065);
-  --grid-line:   rgba(36, 69, 216, .10);
-  --code-bg:     #10131d;
-  --code-fg:     #e6e9f4;
-  --shadow:      0 1px 2px rgba(19, 23, 34, .05), 0 8px 28px rgba(19, 23, 34, .07);
+  --wash:        #f3f0ec;
+  --ink:         #1a1512;
+  --muted:       #6b625c;
+  --line:        #e9e3dd;
+  --line-strong: #d3c9c1;
+  --accent:      #c8102e;
+  --accent-deep: #97001f;
+  --accent-wash: rgba(200, 16, 46, .055);
+  --grid-line:   rgba(200, 16, 46, .09);
+  --code-bg:     #1c1210;
+  --code-fg:     #f3ebe7;
+  --shadow:      0 1px 2px rgba(26, 21, 18, .05), 0 8px 28px rgba(26, 21, 18, .07);
 
   --serif: "STIX Two Text", Georgia, "Times New Roman", serif;
   --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -41,49 +41,49 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper:       #0c0e15;
-    --card:        #131622;
-    --wash:        #10131d;
-    --ink:         #e8eaf4;
-    --muted:       #99a1b7;
-    --line:        #232939;
-    --line-strong: #39415a;
-    --accent:      #8da2ff;
-    --accent-deep: #b9c6ff;
-    --accent-wash: rgba(141, 162, 255, .09);
-    --grid-line:   rgba(141, 162, 255, .11);
+    --paper:       #131010;
+    --card:        #1b1616;
+    --wash:        #171212;
+    --ink:         #f1ece8;
+    --muted:       #b3a79f;
+    --line:        #322a27;
+    --line-strong: #52453f;
+    --accent:      #ff6b60;
+    --accent-deep: #ffb0a8;
+    --accent-wash: rgba(255, 107, 96, .09);
+    --grid-line:   rgba(255, 107, 96, .10);
     --shadow:      0 1px 2px rgba(0, 0, 0, .4), 0 10px 32px rgba(0, 0, 0, .45);
   }
 }
 :root[data-theme="dark"] {
-  --paper:       #0c0e15;
-  --card:        #131622;
-  --wash:        #10131d;
-  --ink:         #e8eaf4;
-  --muted:       #99a1b7;
-  --line:        #232939;
-  --line-strong: #39415a;
-  --accent:      #8da2ff;
-  --accent-deep: #b9c6ff;
-  --accent-wash: rgba(141, 162, 255, .09);
-  --grid-line:   rgba(141, 162, 255, .11);
+  --paper:       #131010;
+  --card:        #1b1616;
+  --wash:        #171212;
+  --ink:         #f1ece8;
+  --muted:       #b3a79f;
+  --line:        #322a27;
+  --line-strong: #52453f;
+  --accent:      #ff6b60;
+  --accent-deep: #ffb0a8;
+  --accent-wash: rgba(255, 107, 96, .09);
+  --grid-line:   rgba(255, 107, 96, .10);
   --shadow:      0 1px 2px rgba(0, 0, 0, .4), 0 10px 32px rgba(0, 0, 0, .45);
 }
 :root[data-theme="light"] {
-  --paper:       #f7f8fb;
+  --paper:       #faf9f7;
   --card:        #ffffff;
-  --wash:        #edf0f7;
-  --ink:         #131722;
-  --muted:       #5c6374;
-  --line:        #e2e5ee;
-  --line-strong: #c9cede;
-  --accent:      #2445d8;
-  --accent-deep: #16308f;
-  --accent-wash: rgba(36, 69, 216, .065);
-  --grid-line:   rgba(36, 69, 216, .10);
-  --code-bg:     #10131d;
-  --code-fg:     #e6e9f4;
-  --shadow:      0 1px 2px rgba(19, 23, 34, .05), 0 8px 28px rgba(19, 23, 34, .07);
+  --wash:        #f3f0ec;
+  --ink:         #1a1512;
+  --muted:       #6b625c;
+  --line:        #e9e3dd;
+  --line-strong: #d3c9c1;
+  --accent:      #c8102e;
+  --accent-deep: #97001f;
+  --accent-wash: rgba(200, 16, 46, .055);
+  --grid-line:   rgba(200, 16, 46, .09);
+  --code-bg:     #1c1210;
+  --code-fg:     #f3ebe7;
+  --shadow:      0 1px 2px rgba(26, 21, 18, .05), 0 8px 28px rgba(26, 21, 18, .07);
 }
 
 /* ---------------- Base ---------------- */
@@ -190,8 +190,8 @@ p { margin: 0 0 16px; }
 .btn:hover { text-decoration: none; transform: translateY(-1px); box-shadow: var(--shadow); }
 .btn svg { width: 17px; height: 17px; flex: none; }
 .btn.primary { background: var(--accent); color: #fff; }
-@media (prefers-color-scheme: dark) { .btn.primary { color: #0c0e15; } }
-:root[data-theme="dark"] .btn.primary { color: #0c0e15; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #131010; } }
+:root[data-theme="dark"] .btn.primary { color: #131010; }
 :root[data-theme="light"] .btn.primary { color: #fff; }
 .btn.ghost {
   background: transparent; color: var(--muted);
