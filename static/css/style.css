@@ -508,12 +508,39 @@ pre.bibtex {
 /* ---------------- Footer ---------------- */
 footer {
   border-top: 1px solid var(--line);
-  padding: 36px 0 44px;
-  text-align: center;
+  padding: 44px 0 40px;
   color: var(--muted);
   font-size: 14px;
+  background: var(--wash);
 }
-footer p { margin: 5px 0; }
+.foot-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 720px; margin: 0 auto 34px;
+}
+.foot-col h4 {
+  font: 700 11.5px/1 var(--sans);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.foot-col a, .foot-col .soon-inline {
+  display: block;
+  padding: 3.5px 0;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.foot-col a:hover { color: var(--accent); text-decoration: none; }
+.foot-col .soon-inline { color: var(--muted); }
+.foot-copy {
+  text-align: center;
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+@media (max-width: 560px) {
+  .foot-grid { grid-template-columns: 1fr; gap: 22px; text-align: center; }
+}
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 880px) {
