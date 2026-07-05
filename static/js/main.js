@@ -151,8 +151,8 @@
         chipDirect.setAttribute("aria-pressed", String(direct));
         if (tagLeft) {
           tagLeft.textContent = direct
-            ? "Direct FLUX @ 2048² · 103.7 s"
-            : "Base 1024² · 20.4 s";
+            ? "2048px · 103.7 s"
+            : "1024px · 20.4 s";
         }
       };
       chipBase.addEventListener("click", function () { setMode(false); });

@@ -494,14 +494,16 @@ table.results .best { font-weight: 700; color: var(--accent-deep); }
 .slider .knob::before { left: 9px;  border-right: 6px solid #131722; }
 .slider .knob::after  { right: 9px; border-left:  6px solid #131722; }
 .slider .tag {
-  position: absolute; bottom: 12px; z-index: 5;
+  position: absolute; z-index: 5;
   font: 700 12px/1.5 var(--sans); letter-spacing: .04em;
   color: #fff; background: rgba(10, 12, 20, .62);
   padding: 5px 12px; border-radius: 999px;
   pointer-events: none;
 }
-.slider .tag.l { left: 12px; }
-.slider .tag.r { right: 12px; }
+.slider .tag.l  { left: 12px;  bottom: 12px; }
+.slider .tag.r  { right: 12px; bottom: 12px; }
+.slider .tag.tl { left: 12px;  top: 12px; }
+.slider .tag.tr { right: 12px; top: 12px; }
 
 .chips { display: flex; gap: 8px; justify-content: center; margin-top: 18px; }
 .chip {
