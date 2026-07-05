@@ -88,7 +88,7 @@
 
 /* ---------------- Base ---------------- */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
 body {
   margin: 0;
   background: var(--paper);
@@ -105,6 +105,49 @@ p { margin: 0 0 16px; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 .prose { max-width: var(--prose); margin-left: auto; margin-right: auto; }
+
+/* ---------------- Sticky section nav ---------------- */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  transform: translateY(-102%);
+  transition: transform .25s ease;
+}
+.topnav.show { transform: none; }
+.topnav-inner {
+  position: relative;
+  max-width: var(--maxw); margin: 0 auto; padding: 0 24px;
+  height: 50px;
+  display: flex; align-items: center; gap: 26px;
+}
+.topnav .brand {
+  font: 700 17px/1 var(--serif);
+  color: var(--accent);
+  letter-spacing: .01em;
+  margin-right: auto;
+}
+.topnav .brand:hover { text-decoration: none; }
+.topnav-links {
+  display: flex; gap: 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.topnav-links::-webkit-scrollbar { display: none; }
+.topnav .nlink {
+  font: 600 13.5px/1 var(--sans);
+  color: var(--muted);
+  white-space: nowrap;
+  padding: 6px 0;
+}
+.topnav .nlink:hover { color: var(--ink); text-decoration: none; }
+.topnav .progress {
+  position: absolute; left: 0; bottom: -1px;
+  height: 2px; width: 0%;
+  background: var(--accent);
+  pointer-events: none;
+}
 
 /* ---------------- Hero ---------------- */
 .hero { position: relative; padding: 84px 0 56px; text-align: center; overflow: hidden; }
@@ -491,5 +534,5 @@ footer p { margin: 5px 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .btn, .gallery img, .chip { transition: none; }
+  .btn, .gallery img, .chip, .topnav { transition: none; }
 }

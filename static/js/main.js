@@ -1,6 +1,23 @@
-/* LUA project page — BibTeX copy + drag-compare slider. No dependencies. */
+/* LUA project page — sticky nav, BibTeX copy, drag-compare slider. No dependencies. */
 (function () {
   "use strict";
+
+  /* ---- Sticky nav + reading progress ---- */
+  var nav = document.getElementById("topnav");
+  var prog = document.getElementById("scroll-progress");
+  var hero = document.querySelector(".hero");
+  if (nav && prog) {
+    var onScroll = function () {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var threshold = hero ? hero.offsetHeight - 90 : 400;
+      nav.classList.toggle("show", y > threshold);
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + "%";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    onScroll();
+  }
 
   /* ---- Copy BibTeX ---- */
   var btn = document.getElementById("copy-bibtex");

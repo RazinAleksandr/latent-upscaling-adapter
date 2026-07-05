@@ -19,6 +19,21 @@
 </head>
 <body>
 
+<!-- ============================ STICKY NAV ============================ -->
+<nav class="topnav" id="topnav" aria-label="Sections">
+  <div class="topnav-inner">
+    <a class="brand" href="#">LUA</a>
+    <div class="topnav-links">
+      <a class="nlink" href="#method">Method</a>
+      <a class="nlink" href="#results">Results</a>
+      <a class="nlink" href="#compare">Compare</a>
+      <a class="nlink" href="#gallery">Gallery</a>
+      <a class="nlink" href="#bibtex">BibTeX</a>
+    </div>
+    <span class="progress" id="scroll-progress" aria-hidden="true"></span>
+  </div>
+</nav>
+
 <!-- ============================ HERO ============================ -->
 <header class="hero">
   <div class="gridfx" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
@@ -140,7 +155,7 @@
 </section>
 
 <!-- ============================ METHOD ============================ -->
-<section class="wash">
+<section class="wash" id="method">
   <div class="container">
     <p class="eyebrow">Method</p>
     <h2 class="section-title">One feed-forward pass in latent space</h2>
@@ -189,7 +204,7 @@
 </section>
 
 <!-- ============================ RESULTS ============================ -->
-<section class="wash">
+<section class="wash" id="results">
   <div class="container">
     <p class="eyebrow">Results</p>
     <h2 class="section-title">Native-level fidelity at a fraction of the cost</h2>
@@ -267,7 +282,7 @@
 </section>
 
 <!-- ============================ DRAG TO COMPARE ============================ -->
-<section>
+<section id="compare">
   <div class="container">
     <p class="eyebrow">Interactive</p>
     <h2 class="section-title">Drag to compare</h2>
@@ -299,7 +314,7 @@
 </section>
 
 <!-- ============================ GALLERY ============================ -->
-<section class="wash">
+<section class="wash" id="gallery">
   <div class="container">
     <p class="eyebrow">Gallery</p>
     <h2 class="section-title">From the release benchmark</h2>
