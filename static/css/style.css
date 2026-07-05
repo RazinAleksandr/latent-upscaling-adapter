@@ -260,6 +260,7 @@ h2.section-title {
 /* ---------------- Figures ---------------- */
 figure { margin: 0 auto; text-align: center; }
 figure + figure { margin-top: 48px; }
+.gallery figure { margin: 0; }   /* grid gap spaces gallery tiles, not the stacked-figure margin */
 figure img {
   border-radius: var(--radius);
   border: 1px solid var(--line);
