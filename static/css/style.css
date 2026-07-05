@@ -425,10 +425,10 @@ table.results .best { font-weight: 700; color: var(--accent-deep); }
   object-fit: cover;
   max-width: none;
   border: 0; border-radius: 0; box-shadow: none;
-  transform: scale(var(--zoom, 2.4));
-  transform-origin: 38% 40%;
 }
-.slider.fit img { transform: none; }
+/* 'vs base' mode magnifies the pixel-aligned pair; 'vs direct' shows full frames */
+.slider.zoomed img { transform: scale(2.4); transform-origin: 50% 40%; }
+.slider .pane.before img:not(.active) { display: none; }
 .slider .divider {
   position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
   background: #fff; z-index: 3; transform: translateX(-50%);

@@ -85,17 +85,27 @@
 
     render();
 
-    /* Zoom chips: detail crop vs whole image */
-    var chipDetail = document.getElementById("zoom-detail");
-    var chipFit = document.getElementById("zoom-fit");
-    if (chipDetail && chipFit) {
-      var setZoom = function (fit) {
-        slider.classList.toggle("fit", fit);
-        chipDetail.setAttribute("aria-pressed", String(!fit));
-        chipFit.setAttribute("aria-pressed", String(fit));
+    /* Comparison chips: LUA vs its 1024 base (magnified) or vs direct 2048 (full frame) */
+    var chipBase = document.getElementById("cmp-base");
+    var chipDirect = document.getElementById("cmp-direct");
+    var tagLeft = document.getElementById("tag-left");
+    var imgBase = slider.querySelector(".pane.before .cmp-base");
+    var imgDirect = slider.querySelector(".pane.before .cmp-direct");
+    if (chipBase && chipDirect && imgBase && imgDirect) {
+      var setMode = function (direct) {
+        imgBase.classList.toggle("active", !direct);
+        imgDirect.classList.toggle("active", direct);
+        slider.classList.toggle("zoomed", !direct);
+        chipBase.setAttribute("aria-pressed", String(!direct));
+        chipDirect.setAttribute("aria-pressed", String(direct));
+        if (tagLeft) {
+          tagLeft.textContent = direct
+            ? "Direct FLUX @ 2048²"
+            : "Base 1024² → 2K (stretched)";
+        }
       };
-      chipDetail.addEventListener("click", function () { setZoom(false); });
-      chipFit.addEventListener("click", function () { setZoom(true); });
+      chipBase.addEventListener("click", function () { setMode(false); });
+      chipDirect.addEventListener("click", function () { setMode(true); });
     }
   }
 })();

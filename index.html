@@ -286,29 +286,31 @@
   <div class="container">
     <p class="eyebrow">Interactive</p>
     <h2 class="section-title">Drag to compare</h2>
-    <p class="lede">The same generation, decoded two ways: the 1024&sup2; base stretched to 2K
-    versus the LUA-upscaled latent decoded at 2048&sup2;.</p>
+    <p class="lede">The LUA &times;2 output against two references: the 1024&sup2; base it upscales,
+    and direct 2048&sup2; sampling at ~2.8&times; the cost.</p>
 
-    <div class="slider" id="ba-slider" role="slider" tabindex="0" aria-label="Comparison slider: base decode versus LUA. Use arrow keys to move."
+    <div class="slider zoomed" id="ba-slider" role="slider" tabindex="0" aria-label="Comparison slider: reference versus LUA. Use arrow keys to move."
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
       <div class="pane after">
-        <img src="static/images/compare/02_fisherman_lua_2048.jpg" alt="LUA ×2 result decoded at 2048², shown magnified." draggable="false" />
+        <img src="static/images/compare/05_bee_lua_2048.jpg" alt="LUA ×2 result decoded at 2048²." draggable="false" />
       </div>
       <div class="pane before">
-        <img src="static/images/compare/02_fisherman_base_1024.jpg" alt="Base 1024² decode stretched to 2K, shown magnified." draggable="false" />
+        <img class="cmp-base active" src="static/images/compare/05_bee_base_1024.jpg" alt="Base 1024² decode stretched to 2K." draggable="false" />
+        <img class="cmp-direct" src="static/images/compare/05_bee_direct_2048.jpg" alt="Direct FLUX sampling at 2048²." draggable="false" />
       </div>
       <div class="divider"></div>
       <div class="knob"></div>
-      <span class="tag l">Base 1024&sup2; &rarr; 2K (stretched)</span>
+      <span class="tag l" id="tag-left">Base 1024&sup2; &rarr; 2K (stretched)</span>
       <span class="tag r">LUA &times;2 @ 2048&sup2;</span>
     </div>
-    <div class="chips" role="group" aria-label="Zoom level">
-      <button class="chip" type="button" id="zoom-detail" aria-pressed="true">Detail view (2.4&times;)</button>
-      <button class="chip" type="button" id="zoom-fit" aria-pressed="false">Fit whole image</button>
+    <div class="chips" role="group" aria-label="Comparison reference">
+      <button class="chip" type="button" id="cmp-base" aria-pressed="true">vs base 1024&sup2;</button>
+      <button class="chip" type="button" id="cmp-direct" aria-pressed="false">vs direct 2048&sup2;</button>
     </div>
     <p class="table-note" style="margin-top:16px">
-      <i>&ldquo;portrait of an elderly fisherman with weathered skin, dramatic rim lighting, 85mm photo&rdquo;</i> —
-      FLUX, 28 steps; both sides share the same seed and base latent.
+      <i>&ldquo;macro shot of a honeybee on a sunflower, dewdrops, shallow depth of field&rdquo;</i> —
+      FLUX, 28 steps. <b>vs base</b> shares the seed and base latent (pixel-aligned, shown magnified);
+      <b>vs direct</b> is native 2048&sup2; sampling of the same prompt — compositions differ, shown in full.
     </p>
   </div>
 </section>
